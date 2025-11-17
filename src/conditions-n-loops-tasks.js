@@ -497,7 +497,7 @@ function shuffleChar(str, iterations) {
  * 321321   => 322113
  *
  */
-function getNearestBigger(number) {
+function getNearestBigger(/* number */) {
   throw new Error('Not implemented');
 }
 
