@@ -268,8 +268,25 @@ function isContainNumber(num, digit) {
  *  [2, 3, 9, 5] => 2       => 2 + 3 === 5 then balance element is 9 and its index = 2
  *  [1, 2, 3, 4, 5] => -1   => no balance element
  */
-function getBalanceIndex(/* arr */) {
-  throw new Error('Not implemented');
+function getBalanceIndex(arr) {
+  let totalSum = 0;
+  let leftSum = 0;
+  let rightSum = 0;
+
+  for (let i = 0; i < arr.length; i += 1) {
+    totalSum += arr[i];
+  }
+
+  for (let i = 0; i < arr.length; i += 1) {
+    leftSum += arr[i];
+    rightSum = totalSum - leftSum - arr[i + 1];
+    if (leftSum === rightSum) {
+      return i + 1;
+    }
+    rightSum = 0;
+  }
+
+  return -1;
 }
 
 /**
@@ -293,8 +310,48 @@ function getBalanceIndex(/* arr */) {
  *          [10, 9,  8,  7]
  *        ]
  */
-function getSpiralMatrix(/* size */) {
-  throw new Error('Not implemented');
+function getSpiralMatrix(size) {
+  const matrix = [];
+  for (let i = 0; i < size; i += 1) {
+    matrix[i] = [];
+    for (let j = 0; j < size; j += 1) {
+      matrix[i][j] = 0;
+    }
+  }
+
+  let num = 1;
+  let top = 0;
+  let bottom = size - 1;
+  let left = 0;
+  let right = size - 1;
+
+  while (num <= size * size) {
+    for (let i = left; i <= right; i += 1) {
+      matrix[top][i] = num;
+      num += 1;
+    }
+    top += 1;
+
+    for (let i = top; i <= bottom; i += 1) {
+      matrix[i][right] = num;
+      num += 1;
+    }
+    right -= 1;
+
+    for (let i = right; i >= left; i -= 1) {
+      matrix[bottom][i] = num;
+      num += 1;
+    }
+    bottom -= 1;
+
+    for (let i = bottom; i >= top; i -= 1) {
+      matrix[i][left] = num;
+      num += 1;
+    }
+    left += 1;
+  }
+
+  return matrix;
 }
 
 /**
@@ -312,8 +369,31 @@ function getSpiralMatrix(/* size */) {
  *    [7, 8, 9]         [9, 6, 3]
  *  ]                 ]
  */
-function rotateMatrix(/* matrix */) {
-  throw new Error('Not implemented');
+function rotateMatrix(matrix) {
+  const res = matrix;
+  const n = matrix.length;
+
+  for (let i = 0; i < n; i += 1) {
+    for (let j = i + 1; j < n; j += 1) {
+      const temp = matrix[i][j];
+      res[i][j] = res[j][i];
+      res[j][i] = temp;
+    }
+  }
+
+  for (let i = 0; i < n; i += 1) {
+    let left = 0;
+    let right = n - 1;
+    while (left < right) {
+      const temp = res[i][left];
+      res[i][left] = res[i][right];
+      res[i][right] = temp;
+      left += 1;
+      right -= 1;
+    }
+  }
+
+  return res;
 }
 
 /**
@@ -330,8 +410,22 @@ function rotateMatrix(/* matrix */) {
  *  [2, 9, 5, 9]    => [2, 5, 9, 9]
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
-function sortByAsc(/* arr */) {
-  throw new Error('Not implemented');
+function sortByAsc(arr) {
+  const res = arr;
+
+  for (let i = 1; i < res.length; i += 1) {
+    const key = res[i];
+    let j = i - 1;
+
+    while (j >= 0 && res[j] > key) {
+      res[j + 1] = res[j];
+      j -= 1;
+    }
+
+    res[j + 1] = key;
+  }
+
+  return res;
 }
 
 /**
@@ -351,8 +445,38 @@ function sortByAsc(/* arr */) {
  *  '012345', 3 => '024135' => '043215' => '031425'
  *  'qwerty', 3 => 'qetwry' => 'qtrewy' => 'qrwtey'
  */
-function shuffleChar(/* str, iterations */) {
-  throw new Error('Not implemented');
+function shuffleChar(str, iterations) {
+  if (iterations <= 0) return str;
+
+  let res = str;
+  const history = {};
+  let currentIteration = 0;
+
+  while (currentIteration < iterations) {
+    if (history[res]) {
+      const start = history[res];
+      const cycleLength = currentIteration - start;
+      const remainingIterations = iterations - currentIteration;
+      const availToSkipItt =
+        Math.floor(remainingIterations / cycleLength) * cycleLength;
+      currentIteration += availToSkipItt;
+    }
+
+    history[res] = currentIteration;
+
+    let shuffled = '';
+    for (let i = 0; i < res.length; i += 2) {
+      shuffled += res[i];
+    }
+    for (let i = 1; i < res.length; i += 2) {
+      shuffled += res[i];
+    }
+
+    res = shuffled;
+    currentIteration += 1;
+  }
+
+  return res;
 }
 
 /**
@@ -373,7 +497,7 @@ function shuffleChar(/* str, iterations */) {
  * 321321   => 322113
  *
  */
-function getNearestBigger(/* number */) {
+function getNearestBigger(number) {
   throw new Error('Not implemented');
 }
 
